@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrar em Grupo de WhatsApp</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+            color: #333;
+            text-align: center;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 90%;
+        }
+        h1 {
+            color: #25d366;
+            margin-bottom: 20px;
+        }
+        p {
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        .loading {
+            font-size: 1.2em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Redirecionando para o Grupo de WhatsApp...</h1>
+        <p>Aguarde um momento enquanto encontramos um grupo para você!</p>
+        <div class="loading">Carregando...</div>
+    </div>
+
+    <script src="links.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Verifica se a lista de grupos existe e não está vazia
+            if (typeof whatsappGroups !== 'undefined' && whatsappGroups.length > 0) {
+                // Obtém o índice do último grupo visitado do localStorage
+                // Se não houver, começa do 0
+                let lastIndex = localStorage.getItem('lastWhatsappGroupIndex');
+                lastIndex = lastIndex ? parseInt(lastIndex) : -1;
+
+                // Calcula o próximo índice
+                let nextIndex = (lastIndex + 1) % whatsappGroups.length;
+
+                // Pega o link do grupo
+                const groupLink = whatsappGroups[nextIndex];
+
+                // Salva o novo índice no localStorage
+                localStorage.setItem('lastWhatsappGroupIndex', nextIndex.toString());
+
+                // Redireciona o usuário
+                window.location.href = groupLink;
+            } else {
+                alert("Nenhum grupo de WhatsApp configurado. Por favor, adicione links no arquivo 'links.js'.");
+                document.querySelector('.container').innerHTML = '<h1>Erro!</h1><p>Nenhum grupo de WhatsApp disponível para redirecionamento.</p>';
+            }
+        });
+    </script>
+</body>
+</html>
